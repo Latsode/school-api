@@ -1,19 +1,18 @@
 package com.softgen.school.api.group.model.dao;
 
 import com.softgen.school.api.group.model.enums.GroupStatus;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.softgen.school.api.student.model.enums.StudentStatus;
+import jakarta.persistence.*;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Data
 @Entity(name = "group_table")
+@EntityListeners(AuditingEntityListener.class)
 public class Group {
 
     @Id
@@ -22,6 +21,7 @@ public class Group {
 
     private String groupName;
 
+    @Column(unique = true)
     private Integer groupNumber;
 
     @CreatedDate
@@ -31,6 +31,11 @@ public class Group {
     private LocalDateTime updatedAt;
 
     private GroupStatus status;
+
+    @PrePersist
+    public void prePersist() {
+        this.status = GroupStatus.ACTIVE;
+    }
 
 
 }
