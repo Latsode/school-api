@@ -17,4 +17,7 @@ public class GroupResponseDTO {
     private LocalDateTime updatedAt;
     private GroupStatus status;
 
+    private Integer studentCount;
+    private Integer teacherCount;
+
 }
