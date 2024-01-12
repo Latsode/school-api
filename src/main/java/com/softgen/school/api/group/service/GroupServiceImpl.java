@@ -137,4 +137,47 @@ public class GroupServiceImpl implements GroupService {
 
         return groupResponseDTO;
     }
+
+    @Override
+    public GroupResponseDTO removeStudentFromGroup(Long groupId, Long studentId) {
+        Group group = groupRepositoryJPA.findById(groupId)
+                .orElseThrow(() -> new EntityNotFoundException("Group not found with ID: " + groupId));
+        Student student = studentRepositoryJPA.findById(studentId)
+                .orElseThrow(() -> new EntityNotFoundException("Student not found with ID: " + studentId));
+
+        //check if student is in group
+        if(!group.getStudents().contains(student)){
+            throw new EntityNotFoundException("Student not found in group with ID: " + studentId);
+        }
+
+        group.getStudents().remove(student);
+
+        Group savedGroup = groupRepositoryJPA.save(group);
+
+        GroupResponseDTO groupResponseDTO = GroupMapper.INSTANCE.toDTO(savedGroup);
+
+        return groupResponseDTO;
+    }
+
+    @Override
+    public GroupResponseDTO removeTeacherFromGroup(Long groupId, Long teacherId) {
+        Group group = groupRepositoryJPA.findById(groupId)
+                .orElseThrow(() -> new EntityNotFoundException("Group not found with ID: " + groupId));
+
+        Teacher teacher = teacherRepositoryJPA.findById(teacherId)
+                .orElseThrow(() -> new EntityNotFoundException("Teacher not found with ID: " + teacherId));
+
+        //check if teacher is in group
+        if(!group.getTeachers().contains(teacher)){
+            throw new EntityNotFoundException("Teacher not found in group with ID: " + teacherId);
+        }
+
+        group.getTeachers().remove(teacher);
+
+        Group savedGroup = groupRepositoryJPA.save(group);
+
+        GroupResponseDTO groupResponseDTO = GroupMapper.INSTANCE.toDTO(savedGroup);
+
+        return groupResponseDTO;
+    }
 }

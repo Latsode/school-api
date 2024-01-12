@@ -21,4 +21,8 @@ public interface GroupService {
 
     GroupResponseDTO addTeacherToGroup(Long groupId, Long teacherId);
 
+    GroupResponseDTO removeStudentFromGroup(Long groupId, Long studentId);
+
+    GroupResponseDTO removeTeacherFromGroup(Long groupId, Long teacherId);
+
 }
