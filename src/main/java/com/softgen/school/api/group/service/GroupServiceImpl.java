@@ -6,6 +6,10 @@ import com.softgen.school.api.group.model.dto.GroupResponseDTO;
 import com.softgen.school.api.group.model.enums.GroupStatus;
 import com.softgen.school.api.group.model.mapper.GroupMapper;
 import com.softgen.school.api.group.repository.GroupRepositoryJPA;
+import com.softgen.school.api.student.model.dao.Student;
+import com.softgen.school.api.student.repository.StudentRepositoryJPA;
+import com.softgen.school.api.teacher.model.dao.Teacher;
+import com.softgen.school.api.teacher.repository.TeacherRepositoryJPA;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +20,14 @@ public class GroupServiceImpl implements GroupService {
 
     private final GroupRepositoryJPA groupRepositoryJPA;
 
-    public GroupServiceImpl(GroupRepositoryJPA groupRepositoryJPA) {
+    private final StudentRepositoryJPA studentRepositoryJPA;
+
+    private final TeacherRepositoryJPA teacherRepositoryJPA;
+
+    public GroupServiceImpl(GroupRepositoryJPA groupRepositoryJPA, StudentRepositoryJPA studentRepositoryJPA, TeacherRepositoryJPA teacherRepositoryJPA) {
         this.groupRepositoryJPA = groupRepositoryJPA;
+        this.studentRepositoryJPA = studentRepositoryJPA;
+        this.teacherRepositoryJPA = teacherRepositoryJPA;
     }
 
 
@@ -94,5 +104,37 @@ public class GroupServiceImpl implements GroupService {
                 .toList();
 
         return groupResponseDTOS;
+    }
+
+    @Override
+    public GroupResponseDTO addStudentToGroup(Long groupId, Long studentId) {
+        Group group = groupRepositoryJPA.findById(groupId)
+                .orElseThrow(() -> new EntityNotFoundException("Group not found with ID: " + groupId));
+        Student student = studentRepositoryJPA.findById(studentId)
+                .orElseThrow(() -> new EntityNotFoundException("Student not found with ID: " + studentId));
+
+        group.getStudents().add(student);
+
+        Group savedGroup = groupRepositoryJPA.save(group);
+
+        GroupResponseDTO groupResponseDTO = GroupMapper.INSTANCE.toDTO(savedGroup);
+
+        return groupResponseDTO;
+    }
+
+    @Override
+    public GroupResponseDTO addTeacherToGroup(Long groupId, Long teacherId) {
+        Group group = groupRepositoryJPA.findById(groupId)
+                .orElseThrow(() -> new EntityNotFoundException("Group not found with ID: " + groupId));
+        Teacher teacher = teacherRepositoryJPA.findById(teacherId)
+                .orElseThrow(() -> new EntityNotFoundException("Teacher not found with ID: " + teacherId));
+
+        group.getTeachers().add(teacher);
+
+        Group savedGroup = groupRepositoryJPA.save(group);
+
+        GroupResponseDTO groupResponseDTO = GroupMapper.INSTANCE.toDTO(savedGroup);
+
+        return groupResponseDTO;
     }
 }

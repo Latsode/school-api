@@ -16,4 +16,9 @@ public interface GroupService {
     void deleteGroup(Long id);
 
     List<GroupResponseDTO> findAllGroups();
+
+    GroupResponseDTO addStudentToGroup(Long groupId, Long studentId);
+
+    GroupResponseDTO addTeacherToGroup(Long groupId, Long teacherId);
+
 }
