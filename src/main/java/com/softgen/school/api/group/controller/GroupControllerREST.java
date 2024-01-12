@@ -46,4 +46,16 @@ public class GroupControllerREST {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/{groupId}/students/{studentId}")
+    public ResponseEntity<GroupResponseDTO> addStudentToGroup(@PathVariable Long groupId, @PathVariable Long studentId) {
+        GroupResponseDTO updatedGroup = groupService.addStudentToGroup(groupId, studentId);
+        return ResponseEntity.ok(updatedGroup);
+    }
+
+    @PostMapping("/{groupId}/teachers/{teacherId}")
+    public ResponseEntity<GroupResponseDTO> addTeacherToGroup(@PathVariable Long groupId, @PathVariable Long teacherId) {
+        GroupResponseDTO updatedGroup = groupService.addTeacherToGroup(groupId, teacherId);
+        return ResponseEntity.ok(updatedGroup);
+    }
+
 }
