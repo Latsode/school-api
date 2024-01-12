@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    ports:
+      - "9090:9090"
+    environment:
+        - SPRING_PROFILE=dev
+        - SERVER_PORT=9090
+    volumes:
+      - .:/app
+      - ~/.gradle:/root/.gradle
