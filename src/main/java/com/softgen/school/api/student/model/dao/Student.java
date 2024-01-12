@@ -41,5 +41,10 @@ public class Student {
 
     private StudentStatus status;
 
+    @PrePersist
+    public void prePersist() {
+    	this.status = StudentStatus.ACTIVE;
+    }
+
 
 }
