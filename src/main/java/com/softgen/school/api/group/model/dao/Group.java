@@ -13,7 +13,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import java.time.LocalDateTime;
 
 @Data
-@Entity(name = "group")
+@Entity(name = "group_table")
 public class Group {
 
     @Id
