@@ -58,4 +58,17 @@ public class GroupControllerREST {
         return ResponseEntity.ok(updatedGroup);
     }
 
+    @DeleteMapping("/{groupId}/students/{studentId}")
+    public ResponseEntity<GroupResponseDTO> removeStudentFromGroup(@PathVariable Long groupId, @PathVariable Long studentId) {
+        GroupResponseDTO updatedGroup = groupService.removeStudentFromGroup(groupId, studentId);
+        return ResponseEntity.ok(updatedGroup);
+    }
+
+    @DeleteMapping("/{groupId}/teachers/{teacherId}")
+    public ResponseEntity<GroupResponseDTO> removeTeacherFromGroup(@PathVariable Long groupId, @PathVariable Long teacherId) {
+        GroupResponseDTO updatedGroup = groupService.removeTeacherFromGroup(groupId, teacherId);
+        return ResponseEntity.ok(updatedGroup);
+    }
+
+
 }
