@@ -1,7 +1,6 @@
 # Running Application
 
 1. Clone the repository
-2. Gradle must be installed
 
 ### Using Docker
 1. open terminal in the root directory of the project
