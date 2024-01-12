@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
@@ -43,7 +44,22 @@ public class GlobalExceptionHandler {
         response.setStatus(status.value());
         response.setError(status.getReasonPhrase());
         response.setMessage(ex.getMessage());
-        response.setPath(request.getDescription(false));
+        response.setPath(getPath(request));
+        response.setHttpMethod(getHttpMethod(request));
         return response;
+    }
+
+    private String getPath(WebRequest request) {
+        if (request instanceof ServletWebRequest) {
+            return ((ServletWebRequest) request).getRequest().getRequestURI();
+        }
+        return null;
+    }
+
+    private String getHttpMethod(WebRequest request) {
+        if (request instanceof ServletWebRequest) {
+            return ((ServletWebRequest) request).getRequest().getMethod();
+        }
+        return null;
     }
 }
