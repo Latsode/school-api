@@ -11,6 +11,7 @@ import com.softgen.school.api.teacher.specification.TeacherSpecification;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -26,6 +27,7 @@ public class TeacherServiceImpl implements TeacherService {
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public TeacherResponseDTO saveTeacher(TeacherRequestDTO teacherRequestDTO) {
         // create teacher object from request
         Teacher teacher = TeacherMapper.INSTANCE.toEntity(teacherRequestDTO);
@@ -42,6 +44,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public TeacherResponseDTO updateTeacher(Long id, TeacherRequestDTO teacherRequestDTO) {
         //Make sure that teacher with given id exists
         Teacher existingTeacher = teacherRepositoryJPA.findById(id)
@@ -60,6 +63,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
+    @Transactional(readOnly = true,rollbackFor = Exception.class)
     public List<TeacherResponseDTO> searchTeachers(String firstName, String lastName, String personalNumber, LocalDate dateOfBirth) {
         //Add search parameters to specification
         Specification<Teacher> specification = TeacherSpecification.searchByMultipleFields(firstName, lastName, personalNumber, dateOfBirth);
@@ -77,6 +81,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteTeacher(Long id) {
         //Make sure that teacher with given id exists
         Teacher teacher = teacherRepositoryJPA.findById(id)

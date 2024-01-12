@@ -10,6 +10,7 @@ import com.softgen.school.api.student.specification.StudentSpecification;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -25,6 +26,7 @@ public class StudentServiceImpl implements StudentService {
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public StudentResponseDTO saveStudent(StudentRequestDTO studentRequestDTO) {
         // create student object from request
         Student student = StudentMapper.INSTANCE.toEntity(studentRequestDTO);
@@ -41,6 +43,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public StudentResponseDTO updateStudent(Long id, StudentRequestDTO studentRequestDTO) {
         //Make sure that student with given id exists
         Student existingStudent = studentRepositoryJPA.findById(id)
@@ -59,6 +62,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Transactional(readOnly = true ,rollbackFor = Exception.class)
     public List<StudentResponseDTO> searchStudents(String firstName, String lastName, String personalNumber, LocalDate dateOfBirth) {
         //Add search parameters to specification
         Specification<Student> specification = StudentSpecification.searchByMultipleFields(firstName, lastName, personalNumber, dateOfBirth);
@@ -76,6 +80,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteStudent(Long id) {
         //Make sure that student with given id exists
         Student student = studentRepositoryJPA.findById(id)

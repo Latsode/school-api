@@ -12,6 +12,7 @@ import com.softgen.school.api.teacher.model.dao.Teacher;
 import com.softgen.school.api.teacher.repository.TeacherRepositoryJPA;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class GroupServiceImpl implements GroupService {
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public GroupResponseDTO saveGroup(GroupRequestDTO groupRequestDTO) {
         // create group object from request
         Group group = GroupMapper.INSTANCE.toEntity(groupRequestDTO);
@@ -48,6 +50,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public GroupResponseDTO updateGroup(Long id, GroupRequestDTO groupRequestDTO) {
         //Make sure that group with given id exists
         Group existingGroup = groupRepositoryJPA.findById(id)
@@ -66,6 +69,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    @Transactional(readOnly = true,rollbackFor = Exception.class)
     public GroupResponseDTO findGroupByGroupNumber(Integer groupNumber) {
 
         Group group = groupRepositoryJPA.findByGroupNumber(groupNumber)
@@ -80,6 +84,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteGroup(Long id) {
         //Make sure that group with given id exists
         Group group = groupRepositoryJPA.findById(id)
@@ -94,6 +99,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    @Transactional(readOnly = true,rollbackFor = Exception.class)
     public List<GroupResponseDTO> findAllGroups() {
         //Get groups from database
         List<Group> groups = groupRepositoryJPA.findAll();
@@ -107,6 +113,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public GroupResponseDTO addStudentToGroup(Long groupId, Long studentId) {
         Group group = groupRepositoryJPA.findById(groupId)
                 .orElseThrow(() -> new EntityNotFoundException("Group not found with ID: " + groupId));
@@ -123,6 +130,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public GroupResponseDTO addTeacherToGroup(Long groupId, Long teacherId) {
         Group group = groupRepositoryJPA.findById(groupId)
                 .orElseThrow(() -> new EntityNotFoundException("Group not found with ID: " + groupId));
@@ -139,6 +147,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public GroupResponseDTO removeStudentFromGroup(Long groupId, Long studentId) {
         Group group = groupRepositoryJPA.findById(groupId)
                 .orElseThrow(() -> new EntityNotFoundException("Group not found with ID: " + groupId));
@@ -160,6 +169,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public GroupResponseDTO removeTeacherFromGroup(Long groupId, Long teacherId) {
         Group group = groupRepositoryJPA.findById(groupId)
                 .orElseThrow(() -> new EntityNotFoundException("Group not found with ID: " + groupId));
