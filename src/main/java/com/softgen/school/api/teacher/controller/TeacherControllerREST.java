@@ -3,6 +3,7 @@ package com.softgen.school.api.teacher.controller;
 import com.softgen.school.api.teacher.model.dto.TeacherRequestDTO;
 import com.softgen.school.api.teacher.model.dto.TeacherResponseDTO;
 import com.softgen.school.api.teacher.service.TeacherService;
+import jakarta.validation.Valid;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,12 +21,12 @@ public class TeacherControllerREST {
         this.teacherService = teacherService;
     }
     @PostMapping
-    public ResponseEntity<TeacherResponseDTO> saveTeacher(@RequestBody TeacherRequestDTO teacherRequestDTO) {
+    public ResponseEntity<TeacherResponseDTO> saveTeacher(@Valid @RequestBody TeacherRequestDTO teacherRequestDTO) {
         return ResponseEntity.ok(teacherService.saveTeacher(teacherRequestDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TeacherResponseDTO> updateTeacher(@PathVariable Long id, @RequestBody TeacherRequestDTO teacherRequestDTO) {
+    public ResponseEntity<TeacherResponseDTO> updateTeacher(@PathVariable Long id,@Valid  @RequestBody TeacherRequestDTO teacherRequestDTO) {
         return ResponseEntity.ok(teacherService.updateTeacher(id, teacherRequestDTO));
     }
     @GetMapping
