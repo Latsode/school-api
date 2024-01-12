@@ -33,7 +33,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex, WebRequest request) {
         ApiErrorResponse response = createErrorResponse(ex, request, HttpStatus.BAD_REQUEST);
-        response.setMessage("Validation failed");
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
