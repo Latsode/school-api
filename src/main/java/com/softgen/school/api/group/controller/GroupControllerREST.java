@@ -3,7 +3,6 @@ package com.softgen.school.api.group.controller;
 import com.softgen.school.api.group.model.dto.GroupRequestDTO;
 import com.softgen.school.api.group.model.dto.GroupResponseDTO;
 import com.softgen.school.api.group.service.GroupService;
-import lombok.Getter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
